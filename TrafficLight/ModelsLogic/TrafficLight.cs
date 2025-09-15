@@ -9,6 +9,8 @@ namespace TrafficLight.ModelsLogic
 {
     internal class TrafficLight : TrafficLightModel
     {
+        public override string LightImage => li.GetLightImage(state);
+
         public override void ChangeLight()
         {
             if (state == TrafficLightState.Red)
@@ -23,25 +25,26 @@ namespace TrafficLight.ModelsLogic
                 lights[(int)TrafficLight.Yellow].isOn = false;
                 lights[(int)TrafficLight.Red].isOn = false;
                 lights[(int)TrafficLight.Green].isOn = true;
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Yellow));
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Red));
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Green));
+                foreach (TrafficLight tl in Enum.GetValues<TrafficLight>())
+                    LightChanged?.Invoke(this, new LightChangedEventArgs(tl));
             }
             else if (state == TrafficLightState.Green)
             {
                 state = TrafficLightState.Yellow;
                 lights[(int)TrafficLight.Yellow].isOn = true;
                 lights[(int)TrafficLight.Green].isOn = false;
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Yellow));
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Green));
+                foreach (TrafficLight tl in Enum.GetValues<TrafficLight>())
+                    if (tl != TrafficLight.Red)
+                        LightChanged?.Invoke(this, new LightChangedEventArgs(tl));
             }
             else if (state == TrafficLightState.Yellow)
             {
                 state = TrafficLightState.Red;
                 lights[(int)TrafficLight.Yellow].isOn = false;
                 lights[(int)TrafficLight.Red].isOn = true;
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Yellow));
-                LightChanged?.Invoke(this, new LightChangedEventArgs(TrafficLight.Red));
+                foreach (TrafficLight tl in Enum.GetValues<TrafficLight>())
+                    if (tl != TrafficLight.Green)
+                        LightChanged?.Invoke(this, new LightChangedEventArgs(tl));
             }
         }
     }

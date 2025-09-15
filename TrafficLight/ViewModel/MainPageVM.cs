@@ -13,6 +13,7 @@ namespace TrafficLight.ViewModel
         public Color RedColor => trafficLight.RedColor;
         public Color YellowColor => trafficLight.YellowColor;
         public Color GreenColor => trafficLight.GreenColor;
+        public string LightImage => trafficLight.LightImage;
 
         private void ChangeLight()
         {
@@ -43,6 +44,8 @@ namespace TrafficLight.ViewModel
                     break;
 
             }
+            OnPropertyChanged(nameof(LightImage));
+
         }
     }
 }
